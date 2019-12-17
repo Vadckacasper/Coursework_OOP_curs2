@@ -9,7 +9,7 @@ using namespace sf;
 int main()
 {
 	RenderWindow window(VideoMode(320, 480), "Tetris");
-	Figure fig;
+	Figure fig("images/tiles.png");
 	while (window.isOpen())
 	{
 		sf::Event event;
@@ -20,9 +20,15 @@ int main()
 		}
 
 
-		fig.sprint();
+		
+		fig.Coordinate();
 		window.clear(Color::White);
-		window.draw(fig.s);
+		for (int i = 0; i < 4; i++)
+		{
+			fig.paint(i);
+			window.draw(fig.s);
+		}
+		
 		window.display();
 	}
 	return 0;
