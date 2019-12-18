@@ -9,19 +9,9 @@ Figure::Figure(std::string str)
 	 s.setTextureRect(IntRect(0, 0, 18, 18));
 }
 
-
-void Figure::Coordinate(int n)
-{
-	if (a[0].x==0)
-	for (int i = 0; i < 4; i++)
-	{
-		a[i].x = figures[n][i] % 2;
-		a[i].y = figures[n][i] / 2;
-	}
-}
-
 void Figure::paint(int i)
 {
+	s.setTextureRect(IntRect(colorNum * 18, 0, 18, 18));
 	s.setPosition(a[i].x * 18, a[i].y * 18);
 }
 
@@ -72,34 +62,44 @@ void Figure::Move(Field& ch)
 void Figure::Timer()
 {
 	float time = clock.getElapsedTime().asSeconds();
+	float q = time;
 	clock.restart();
 	timer += time;
+
 }
 
 void Figure::Tick(Field& ch)
 {
 	srand(time(NULL));
-	if (timer > delay)
+	if (!(ch.check_end(colorNum)))
 	{
-		for (int i = 0; i < 4; i++)
+		if (timer > delay)
 		{
-			b[i] = a[i];
-			a[i].y += 1;
-		}
-		if (!(ch.check()))
-		{
-			for (int i = 0; i < 4; i++)
-				ch.field[b[i].y][b[i].x] = colorNum;
-
-			colorNum = 1 + rand() % 7;
-			int n = rand() % 7;
 			for (int i = 0; i < 4; i++)
 			{
-				a[i].x = figures[n][i] % 2;
-				a[i].y = figures[n][i] / 2; 
+				b[i] = a[i];
+				a[i].y += 1;
 			}
+			if (!(ch.check()))
+			{
+				for (int i = 0; i < 4; i++)
+					ch.field[b[i].y][b[i].x] = colorNum;
+				int rand_x = rand() % 9;
+				colorNum = 1 + rand() % 7;
+				int n = rand() % 7;
+				for (int i = 0; i < 4; i++)
+				{
+					a[i].x =rand_x + figures[n][i] % 2;
+					a[i].y = figures[n][i] / 2;
+				}
+			}
+			timer = 0;
+
 		}
-		timer = 0;
 	}
+	else
+		for (int i = 0; i < ch.M; i++)
+			for (int j = 0; j < ch.N; j++)
+				ch.field[i][j] = 0;
 }
 

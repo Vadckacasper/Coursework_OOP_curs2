@@ -3,20 +3,23 @@
 #include <time.h>
 #include "Field.h"
 
+
 using namespace sf;
 class Field;
 
-class Figure
+class Figure 
 {
+private:
+	
+	Texture texture;
+
 public:
+	Sprite s;
 	friend Field;
 	Figure(std::string str);
-	Texture texture;
-	Sprite s;
-
 	int dx = 0, colorNum = 1;
 	bool rotate = 0;
-	float timer = 0, delay = 0.3;
+	double timer = 0, delay = 0.3;
 	Clock clock;
 	int figures[7][4] =
 	{
@@ -28,14 +31,14 @@ public:
 		3,5,7,6,
 		2,3,4,5,
 	};
-	void Coordinate(int n);
+
 	void paint(int i);
 	void key(Event event);
 	void Rotate(Field& ch);
 	void Move(Field& ch);
 	void Timer();
 	void Tick(Field& ch);
-
+	
 
 };
 
